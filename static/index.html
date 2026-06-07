@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 3D Asset Organizer</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 850px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin: auto; }
+        h1 { color: #333; }
+        textarea { width: 100%; height: 120px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit;}
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; margin-top: 10px; cursor: pointer; border-radius: 4px; font-weight: bold;}
+        button:disabled { background: #aaa; cursor: not-allowed; }
+        .error { color: red; margin-top: 10px; display: none; }
+        .loading { margin-top: 10px; display: none; font-style: italic; color: #555; }
+        #result { margin-top: 20px; display: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .text-center { text-align: center; }
+        .suggestions { background: #eef5ff; padding: 15px; border-radius: 4px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>AI 3D Asset Organizer</h1>
+    <p>Nhập mô tả hoặc danh sách asset 3D của bạn (VD: 1 giường ngủ lớn, 2 sofa sảnh chính, 1 tủ điện tổng...):</p>
+    
+    <textarea id="inputData" placeholder="Nhập text hoặc JSON..."></textarea>
+    <button id="submitBtn" onclick="processData()">Tổ chức Asset</button>
+    
+    <div id="loading" class="loading">⏳ Đang nhờ AI phân tích dữ liệu...</div>
+    <div id="error" class="error"></div>
+
+    <div id="result">
+        <h3>Metadata Dự án</h3>
+        <p><strong>Tên dự án:</strong> <span id="projName"></span></p>
+        <p><strong>Tổng số loại Asset:</strong> <span id="totalAssets"></span></p>
+
+        <h3>Danh sách Asset đã phân loại</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên gốc</th>
+                    <th style="width: 100px;" class="text-center">Số lượng</th>
+                    <th>Phân loại</th>
+                    <th>Tên File (Slug) Gợi ý</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+
+        <div class="suggestions">
+            <h3>Đề xuất cải thiện</h3>
+            <ul id="suggestionsList"></ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function processData() {
+        const inputData = document.getElementById('inputData').value;
+        const btn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+        const errorDiv = document.getElementById('error');
+        const resultDiv = document.getElementById('result');
+
+        if (!inputData.trim()) {
+            errorDiv.innerText = "Vui lòng nhập dữ liệu asset.";
+            errorDiv.style.display = 'block';
+            return;
+        }
+
+        errorDiv.style.display = 'none';
+        resultDiv.style.display = 'none';
+        loading.style.display = 'block';
+        btn.disabled = true;
+
+        try {
+            const response = await fetch('/api/organize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ inputData })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) throw new Error(data.detail || 'Lỗi kết nối API');
+
+            document.getElementById('projName').innerText = data.metadata.projectName;
+            document.getElementById('totalAssets').innerText = data.metadata.totalAssets;
+            
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            data.assets.forEach(asset => {
+                tbody.innerHTML += `<tr>
+                    <td>${asset.originalName}</td>
+                    <td class="text-center"><strong>${asset.quantity || 1}</strong></td>
+                    <td>${asset.category}</td>
+                    <td><code>${asset.suggestedSlug}</code></td>
+                </tr>`;
+            });
+
+            const suggestionsList = document.getElementById('suggestionsList');
+            suggestionsList.innerHTML = '';
+            data.suggestions.forEach(s => {
+                suggestionsList.innerHTML += `<li>${s}</li>`;
+            });
+
+            resultDiv.style.display = 'block';
+
+        } catch (err) {
+            errorDiv.innerText = `❌ Lỗi: ${err.message}`;
+            errorDiv.style.display = 'block';
+        } finally {
+            loading.style.display = 'none';
+            btn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>

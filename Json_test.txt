@@ -1,0 +1,112 @@
+**1**
+{
+   "danh_sach": [
+    {
+      "ten": "Giường ngủ King Size bọc da",
+      "ghi_chu": "Đặt tại phòng ngủ chính Master Bedroom"
+    },
+    {
+      "ten": "Sofa nỉ chữ L màu xám",
+      "ghi_chu": "Nội thất khu sảnh sinh hoạt chung"
+    },
+    {
+      "ten": "Tủ điện tổng âm tường",
+      "ghi_chu": "Lắp đặt tại phòng kỹ thuật tầng chẵn"
+    },
+    {
+      "ten": "Đèn chùm pha lê cao cấp",
+      "ghi_chu": "Treo ở trần sảnh chính"
+    },
+    {
+      "ten": "Cụm máy bơm áp lực nước",
+      "ghi_chu": "Khu vực kỹ thuật phía sau ban công"
+    }
+  ]
+}
+
+**2**
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Giường ngủ King Size bọc nỉ",
+      "quantity": 10,
+      "note": "Đặt ở giữa phòng khách sạn"
+    },
+    {
+      "id": 2,
+      "name": "Sofa da thật chữ L",
+      "quantity": 2,
+      "note": "Dành cho khu vực sảnh chờ lễ tân"
+    },
+    {
+      "id": 3,
+      "name": "Hệ thống máy lạnh trung tâm VRV",
+      "quantity": 1,
+      "note": "Đặt trên tầng thượng"
+    },
+    {
+      "id": 4,
+      "name": "Tủ điện phân phối tổng",
+      "quantity": 1,
+      "note": "Đặt ở phòng an ninh tầng hầm"
+    },
+    {
+      "id": 5,
+      "name": "Bàn trang điểm gỗ sồi",
+      "quantity": 10,
+      "note": "Đi kèm gương LED"
+    },
+    {
+      "id": 6,
+      "name": "Bàn trà kính cường lực",
+      "quantity": 5,
+      "note": "Sử dụng tại khu vực sảnh sinh hoạt chung"
+    }
+  ]
+}
+
+**3**
+{
+   ,
+  "zones": [
+    {
+      "zone_name": "Sân vườn & Bể bơi vô cực",
+      "type": "Outdoor/Public",
+      "assets": [
+        {
+          "model_name": "Ghế tắm nắng mây tre đan",
+          "poly_count": 25000,
+          "file_extension": ".fbx"
+        },
+        {
+          "model_name": "Hệ thống vòi phun nước massage",
+          "poly_count": 120000,
+          "file_extension": ".obj"
+        }
+      ]
+    },
+    {
+      "zone_name": "Phòng ngủ tầng lửng",
+      "type": "Private Room",
+      "assets": [
+        {
+          "model_name": "Tab đầu giường gỗ óc chó",
+          "poly_count": 5000,
+          "file_extension": ".max"
+        }
+      ]
+    },
+    {
+      "zone_name": "Trạm biến áp ngầm",
+      "type": "Technical",
+      "assets": [
+        {
+          "model_name": "Biến áp 3 pha vỏ cách điện",
+          "poly_count": 85000,
+          "file_extension": ".fbx"
+        }
+      ]
+    }
+  ]
+}
